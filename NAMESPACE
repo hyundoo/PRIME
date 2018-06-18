@@ -1,0 +1,4 @@
+export(PRIME)
+importFrom(Rcpp,evalCpp)
+import("edgeR", "matrixStats", "Matrix", "Seurat", "parallelDist", "irlba")
+useDynLib(PRIME)
