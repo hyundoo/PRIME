@@ -27,7 +27,7 @@
 #'
 PRIME <- function(sc_cnt, max_it = 5, alp = 1, err_max = 0.05){
   message('Start PRIME')
-  set.seed(0)
+  set.seed(1234)
   # normalization
   sc_data_raw <- log10(1+cpm(sc_cnt))
 
