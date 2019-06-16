@@ -8,12 +8,12 @@ using namespace arma;
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export()]]
 
-arma::mat prime_core(arma::mat x, arma::mat C, arma::mat sc_data, const int alp){
+arma::mat prime_core(arma::mat x, arma::mat C, arma::mat sc_data, double min_nbr, double max_nbr){
     // set the parameters
     const int n_genes = sc_data.n_rows;
     const int n_cells = sc_data.n_cols;
     int nbr_len = 0;
-    
+
     // variables
     arma::mat M = x;
     arma::mat sppr_init(n_cells, 1);
@@ -44,8 +44,8 @@ arma::mat prime_core(arma::mat x, arma::mat C, arma::mat sc_data, const int alp)
         ppr_app3 = (M * ppr_app2);
         
         ids = find(C.row(i) >= 0.5);
-        nbr_len = ceil(1.25*ids.n_rows);
-        nbr_len = min(NumericVector::create(nbr_len, ceil(0.2*n_cells)));
+        nbr_len = ceil(max_nbr*ids.n_rows);
+        nbr_len = min(NumericVector::create(nbr_len, ceil(min_nbr*n_cells)));
 
         sorted_ppr = arma::sort(ppr_app3, "descend");
         nbr_id = find(ppr_app3 >=  sorted_ppr(nbr_len));
