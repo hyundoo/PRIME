@@ -1,4 +1,3 @@
-
 #' Probabilistic imputation to reduce dropout effects in single cell sequencing data
 #'
 #' Probabilistic imputation to reduce dropout effects in single cell sequencing data
@@ -25,9 +24,17 @@
 #' plot(pca_res$x[,1], pca_res$x[,2], bg = c("red", "blue","green")[factor(label)],  type = "p", pch = 21, xlab = "PC1", ylab = "PC2")
 #' legend("topleft", title="Cell types", c("G1","S","G2M"), fill = c("red", "blue","green"), horiz = TRUE)
 #'
-PRIME <- function(sc_cnt, max_it = 5, alp = 1, err_max = 0.05){
+PRIME <- function(sc_cnt, max_it = 5, err_max = 0.05, nPCs = 20, qth_min = 0.9, th_min = 0.85, min_nbr = 0.2, max_nbr = 1.25){
   message('Start PRIME')
   set.seed(1234)
+  
+  # workarorund for Seurat
+  rname <- rownames(sc_cnt)
+  rname <- gsub("_", "-", rname)
+  rownames(sc_cnt) <- rname
+  
+  
+  
   # normalization
   sc_data_raw <- log10(1+cpm(sc_cnt))
 
@@ -39,29 +46,29 @@ PRIME <- function(sc_cnt, max_it = 5, alp = 1, err_max = 0.05){
     message(paste(iter, '-th iteration ', sep = ''))
     sc_data_prev <- sc_data_imputed
 
-    seurat <- CreateSeuratObject(raw.data = sc_data_prev, min.cells = 0, min.genes = 0)
-    seurat <- FindVariableGenes(object = seurat, mean.function = ExpMean, dispersion.function = LogVMR,
-                                x.low.cutoff = 1, x.high.cutoff = 10, y.cutoff = 1, do.plot = F, display.progress = F)
-    var_genes <- seurat@var.genes
+    seurat <- CreateSeuratObject(counts = sc_data_prev, min.cells = 0, min.features = 0)
+    seurat <- FindVariableFeatures(object = seurat, selection.method = 'vst', verbose = F)
+    var_genes <- seurat@assays$RNA@var.features
+    
 
     sel_data <- sc_data_prev[var_genes,]
     sel_data <- apply(sel_data, 2, as.numeric)
 
-    my_pca_log <- prcomp_irlba(t(sc_data_prev[var_genes,]), n = 20)
+    my_pca_log <- prcomp_irlba(t(sc_data_prev[var_genes,]), n = nPCs)
     PCs <- t(my_pca_log$x)
     cor_dist <- cor(PCs, method ='pearson')
-    cdist_mat <- FindNBR(cor_dist, qth = 0.9, th = 0.85)
+    cdist_mat <- FindNBR(cor_dist, qth = qth_min, th = th_min)
 
     edist <- EucDist(PCs)
-    edist_mat <- FindNBR(as.matrix(edist), qth = 0.9, th = 0.85)
+    edist_mat <- FindNBR(as.matrix(edist), qth = qth_min, th = th_min)
 
     sim_mat <- 0.5*(edist_mat + cdist_mat)
     sim_mat <- sim_mat^2
-    D1 <- Matrix(diag(1/colSums(sim_mat)), sparse = TRUE)
+    D1 <- Matrix(diag(1/Matrix::colSums(sim_mat)), sparse = TRUE)
     E1 <- sim_mat %*% D1
     E2 <- (E1 %*% E1)
 
-    sc_data_imputed <- prime_core(as.matrix(E2), as.matrix(sim_mat), sc_data_prev, alp)
+    sc_data_imputed <- prime_core(x = as.matrix(E2), C = as.matrix(sim_mat), sc_data = sc_data_prev, min_nbr = min_nbr, max_nbr = max_nbr)
     rownames(sc_data_imputed) <- rownames(sc_data_raw)
     colnames(sc_data_imputed) <- colnames(sc_data_raw)
 
