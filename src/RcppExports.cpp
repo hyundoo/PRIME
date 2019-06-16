@@ -7,22 +7,23 @@
 using namespace Rcpp;
 
 // prime_core
-arma::mat prime_core(arma::mat x, arma::mat C, arma::mat sc_data, const int alp);
-RcppExport SEXP _PRIME_prime_core(SEXP xSEXP, SEXP CSEXP, SEXP sc_dataSEXP, SEXP alpSEXP) {
+arma::mat prime_core(arma::mat x, arma::mat C, arma::mat sc_data, double min_nbr, double max_nbr);
+RcppExport SEXP _PRIME_prime_core(SEXP xSEXP, SEXP CSEXP, SEXP sc_dataSEXP, SEXP min_nbrSEXP, SEXP max_nbrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type C(CSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type sc_data(sc_dataSEXP);
-    Rcpp::traits::input_parameter< const int >::type alp(alpSEXP);
-    rcpp_result_gen = Rcpp::wrap(prime_core(x, C, sc_data, alp));
+    Rcpp::traits::input_parameter< double >::type min_nbr(min_nbrSEXP);
+    Rcpp::traits::input_parameter< double >::type max_nbr(max_nbrSEXP);
+    rcpp_result_gen = Rcpp::wrap(prime_core(x, C, sc_data, min_nbr, max_nbr));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_PRIME_prime_core", (DL_FUNC) &_PRIME_prime_core, 4},
+    {"_PRIME_prime_core", (DL_FUNC) &_PRIME_prime_core, 5},
     {NULL, NULL, 0}
 };
 
