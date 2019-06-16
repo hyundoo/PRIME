@@ -6,8 +6,6 @@
 
 using namespace Rcpp;
 
-// [[Rcpp::depends(RcppArmadillo)]]
-// [[Rcpp::export()]]
 
 arma::mat prime_core(arma::mat x, arma::mat C, arma::mat sc_data, double min_nbr, double max_nbr);
 RcppExport SEXP _PRIME_prime_core(SEXP xSEXP, SEXP CSEXP, SEXP sc_dataSEXP, SEXP min_nbrSEXP, SEXP max_nbrSEXP) {
