@@ -8,14 +8,25 @@ Overview of PRIME
 
 
 ## Installation guide 
-To install PRIME (R package), you need to install devtools and type the following command:
+Note that please do not use R version (>=3.6.0) because there is a package dependency error in devtools and install PRIME through the following steps. 
+
+Fist, you need to install edgeR and multtest using the following commands:
 ```
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("multtest")
+BiocManager::install("edgeR")
+```
+
+Next, please install caTools (ver 1.17.2) and install PRIME using the following commencs
+'''
+pkgurl <- "https://cran.r-project.org/src/contrib/Archive/caTools/caTools_1.17.1.2.tar.gz"
+install.packages(pkgurl , repos = NULL, type = "source")
+
 install.packages("devtools")
 library(devtools)
 install_github("hyundoo/PRIME")
 ```
-
-
 
 
 
