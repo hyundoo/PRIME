@@ -13,7 +13,8 @@ Depends:
     Matrix(=1.2-15),
     Seurat(=3.0.2),
     irlba(=2.3.3),
-    parallelDist(=0.2.4)Imports:
+    parallelDist(=0.2.4)
+ Imports:
     RcppArmadillo,
     Rcpp,
     edgeR,
