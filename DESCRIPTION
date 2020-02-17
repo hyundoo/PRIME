@@ -4,7 +4,16 @@ Title: What the Package Does (Title Case)
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
-Imports:
+Depends: 
+    R(=3.5.2),
+    RcppArmadillo(=0.9.500.2.0),
+    Rcpp(=1.0.1),
+    edgeR(=3.24.3),
+    matrixStats(=0.54.0),
+    Matrix(=1.2-15),
+    Seurat(=3.0.2),
+    irlba(=2.3.3),
+    parallelDist(=0.2.4)Imports:
     RcppArmadillo,
     Rcpp,
     edgeR,
