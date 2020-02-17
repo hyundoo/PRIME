@@ -12,7 +12,8 @@ Imports:
     Matrix,
     Seurat,
     irlba,
-    parallelDist
+    parallelDist,
+    bitops
 LinkingTo:
     RcppArmadillo,
     Rcpp,
@@ -21,7 +22,8 @@ LinkingTo:
     Matrix,
     Seurat,
     irlba,
-    parallelDist
+    parallelDist,
+    bitops
 Depends:
      R (>= 3.5.2),
     RcppArmadillo (>= 0.9.500.2.0),
