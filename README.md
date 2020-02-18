@@ -24,7 +24,7 @@ Third, if you already installed Rtools, skip this step. Please install Rtools (v
 
 Next, please install caTools (ver 1.17.2) and install PRIME using the following commencs
 ```
-install.packabes("bitops")
+install.packages("bitops")
 pkgurl <- "https://cran.r-project.org/src/contrib/Archive/caTools/caTools_1.17.1.2.tar.gz"
 install.packages(pkgurl , repos = NULL, type = "source")
 
