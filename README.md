@@ -8,9 +8,11 @@ Overview of PRIME
 
 
 ## Installation guide 
-Note that please do not use R version (>=3.6.0) because there is a package dependency error in devtools and install PRIME through the following steps. 
+** Note that since "devtools" has an issue with R version (>=3.6.0), please do the followin steps to install PRIME. Once "devtools" resolve the compatibility issue, we can provide the simple installation command. **
 
-Fist, you need to install edgeR and multtest using the following commands:
+First, please do not use R version (>=3.6.0) to avoide compatibility issue. We tested R version 3.5.2.
+
+Next, you need to install edgeR and multtest using the following commands:
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -18,9 +20,11 @@ BiocManager::install("multtest")
 BiocManager::install("edgeR")
 ```
 
+Third, if you already installed Rtools, skip this step. Please install Rtools (ver 3.5) you can find Rtools at: https://cran.r-project.org/bin/windows/Rtools/
 
 Next, please install caTools (ver 1.17.2) and install PRIME using the following commencs
 ```
+install.packabes("bitops")
 pkgurl <- "https://cran.r-project.org/src/contrib/Archive/caTools/caTools_1.17.1.2.tar.gz"
 install.packages(pkgurl , repos = NULL, type = "source")
 
